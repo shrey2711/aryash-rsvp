@@ -1185,69 +1185,54 @@ select option { background: #fff; color: #1a5a9a; }
   function bumpCounter(at,gc){var d=getRsvpData();d.total++;if(at==='Happily Attending'){d.attending++;d.guests+=parseInt(gc)||1;}localStorage.setItem('aryash_tally',JSON.stringify(d));document.getElementById('counterBar').classList.add('show');loadCounter();}
 
   function sendRSVP(){
-    var name    = document.getElementById('guestName').value.trim();
-    var email   = document.getElementById('guestEmail').value.trim();
-    var guests  = document.getElementById('guestCount').value.trim() || '1';
-    var attend  = document.getElementById('attendance').value;
-    var message = document.getElementById('guestMessage').value.trim();
+    var gName   = document.getElementById('guestName').value.trim();
+    var gEmail  = document.getElementById('guestEmail').value.trim();
+    var gCount  = document.getElementById('guestCount').value.trim() || '1';
+    var gAttend = document.getElementById('attendance').value;
+    var gMsg    = document.getElementById('guestMessage').value.trim();
 
-    if (!name)   { showFieldError('guestName',  'Please enter your full name 💙'); return; }
-    if (!attend) { showFieldError('attendance', 'Please select your attendance 💙'); return; }
+    if (!gName)   { showFieldError('guestName',  'Please enter your full name 💙'); return; }
+    if (!gAttend) { showFieldError('attendance', 'Please select your attendance 💙'); return; }
 
     var btn = document.getElementById('rsvpBtn');
     btn.disabled = true;
     btn.innerHTML = '<span class="spinner"></span> Sending…';
 
-    var at = attend === 'yes' ? 'Happily Attending'
-           : attend === 'maybe' ? 'Hopefully Attending' : 'Unable to Attend';
+    var at = gAttend === 'yes' ? 'Happily Attending'
+           : gAttend === 'maybe' ? 'Hopefully Attending' : 'Unable to Attend';
 
+    /* ── Show success screen immediately ── */
+    document.getElementById('rsvpForm').style.display = 'none';
+    document.getElementById('confirmedName').textContent = gName;
+    document.getElementById('successScreen').classList.add('show');
+
+    /* ── Send to Formspree silently AFTER success screen shown ── */
     var FURL = localStorage.getItem('aryash_formspree_url') || '';
-
-    if (!FURL) {
-      btn.disabled = false;
-      btn.innerHTML = 'CONFIRM MY RSVP 👑';
-      alert('⚠️ RSVP emails not configured. Open this file with ?admin in the URL to set up.');
-      return;
+    if (FURL) {
+      var img = new Image();
+      var f = document.createElement('form');
+      f.method = 'POST';
+      f.action = FURL;
+      f.style.cssText = 'position:fixed;top:-9999px;';
+      var iframe = document.createElement('iframe');
+      iframe.name = 'rs' + Date.now();
+      iframe.style.cssText = 'position:fixed;top:-9999px;width:0;height:0;border:0;';
+      f.target = iframe.name;
+      document.body.appendChild(iframe);
+      document.body.appendChild(f);
+      var pairs = [
+        ['name', gName], ['email', gEmail||'Not provided'],
+        ['guests', gCount], ['attendance', at], ['message', gMsg||'-'],
+        ['_subject', 'RSVP: ' + gName + ' - ' + at],
+        ['_replyto', gEmail||''], ['_template', 'table']
+      ];
+      pairs.forEach(function(p){
+        var inp = document.createElement('input');
+        inp.type='hidden'; inp.name=p[0]; inp.value=p[1];
+        f.appendChild(inp);
+      });
+      try { f.submit(); } catch(e){}
     }
-
-    /* ── Build & submit a hidden form into a hidden iframe ── */
-    /* iframe.onload is unreliable cross-origin — we use a 2.5s timer instead */
-    var iframe = document.getElementById('rsvpFrame') || document.createElement('iframe');
-    iframe.id   = 'rsvpFrame';
-    iframe.name = 'rsvpFrame';
-    iframe.style.cssText = 'position:absolute;width:1px;height:1px;opacity:0;pointer-events:none;';
-    document.body.appendChild(iframe);
-
-    var form = document.createElement('form');
-    form.method  = 'POST';
-    form.action  = FURL;
-    form.target  = 'rsvpFrame';
-    form.style.display = 'none';
-
-    [
-      ['name',      name],
-      ['email',     email || 'Not provided'],
-      ['guests',    guests],
-      ['attendance',at],
-      ['message',   message || '—'],
-      ['_subject',  'New RSVP - Welcome Aryash! [' + at + ']'],
-      ['_replyto',  email || 'noreply@example.com'],
-      ['_template', 'table']
-    ].forEach(function(pair) {
-      var inp = document.createElement('input');
-      inp.type = 'hidden'; inp.name = pair[0]; inp.value = pair[1];
-      form.appendChild(inp);
-    });
-
-    document.body.appendChild(form);
-    form.submit();
-
-    /* Show success after 2.5s regardless of network response */
-    setTimeout(function() {
-      bumpCounter(at, guests);
-      showSuccess(name);
-      if (form.parentNode) form.parentNode.removeChild(form);
-    }, 2500);
   }
 
   function showFieldError(id, msg) {
