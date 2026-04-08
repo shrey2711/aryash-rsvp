@@ -4,6 +4,7 @@
 <meta charset="UTF-8"/>
 <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
 <title>Welcome to This World 👑</title>
+<script src="https://cdn.jsdelivr.net/npm/@emailjs/browser@4/dist/email.min.js"></script>
 <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@300;400;600;700;800&family=Dancing+Script:wght@600;700&family=Fredoka+One&display=swap" rel="stylesheet"/>
 <style>
 *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
@@ -136,7 +137,7 @@ body {
 
 /* ── Corner decoration pieces ── */
 .corner {
-  position: absolute; z-index: 10; pointer-events: none;
+  position: absolute; z-index: 30; pointer-events: none;
 }
 .corner-tl { top: 0;    left: 0;   }
 .corner-tr { top: 0;    right: 0;  }
@@ -337,8 +338,8 @@ select option { background: #fff; color: #1a5a9a; }
 .btn-rsvp:hover:not(:disabled) { transform: translateY(-2px); box-shadow: 0 9px 30px rgba(30,106,191,0.52); }
 .btn-rsvp:disabled { opacity: 0.5; cursor: not-allowed; }
 
-.success-screen { display: none; text-align: center; padding: 1.5rem 0 2.5rem; position: relative; z-index: 50; animation: popIn .7s cubic-bezier(0.34,1.56,0.64,1) both; }
-.success-screen.show { display: block; padding-bottom: 180px; }
+.success-screen { display: none; text-align: center; padding: 1.5rem 0 180px; position:relative; z-index:50; animation: popIn .7s cubic-bezier(0.34,1.56,0.64,1) both; }
+.success-screen.show { display: block; }
 .success-screen h2 { font-family: 'Fredoka One', sans-serif; font-size: 1.9rem; color: #1a5a9a; margin: 0.8rem 0 0.4rem; }
 .success-screen p { font-size: 1.02rem; color: #4a90c8; line-height: 1.75; font-weight: 600; }
 .confirmed-name { color: #1e6abf; font-style: italic; }
@@ -394,14 +395,12 @@ select option { background: #fff; color: #1a5a9a; }
 
 .intro-love-title {
   font-family: 'Dancing Script', cursive;
-  font-size: clamp(1.4rem, 3.8vw, 2rem);
+  font-size: clamp(1.3rem, 3.5vw, 1.8rem);
   color: #1a5a9a;
   text-align: center;
   margin-bottom: 0.6rem;
   letter-spacing: 0.04em;
   text-shadow: 0 2px 12px rgba(42,100,180,0.2);
-  font-weight: 700;
-  font-style: italic;
 }
 .intro-love-heart {
   color: #e53935;
@@ -440,6 +439,34 @@ select option { background: #fff; color: #1a5a9a; }
   .ihp-text { font-size: 0.88rem; }
   .intro-hint-pill { padding: 8px 16px; gap: 7px; margin-top: 10px; }
 }
+
+.intro-love-title{font-family:'Dancing Script',cursive;font-size:clamp(1.4rem,3.8vw,2rem);
+  color:#1a5a9a;text-align:center;margin-bottom:0.6rem;letter-spacing:.04em;
+  text-shadow:0 2px 12px rgba(42,100,180,0.2);font-weight:700;font-style:italic;}
+.intro-love-heart{color:#e53935;font-size:0.9em;}
+.pw-wrap{display:flex;flex-direction:column;align-items:center;gap:0;}
+.pw-top,.pw-bot{display:flex;justify-content:center;align-items:flex-end;gap:40px;}
+.pw-top{align-items:flex-end;margin-bottom:-18px;z-index:2;position:relative;}
+.pw-bot{align-items:flex-start;margin-top:-18px;z-index:2;position:relative;}
+.pw-wand{display:flex;flex-direction:column;align-items:center;z-index:3;position:relative;}
+.pw-photo{display:flex;flex-direction:column;align-items:center;gap:5px;}
+.ip-wrap{transition:transform .3s ease,filter .3s ease;}
+.ip-wrap:hover{transform:translateY(-6px) scale(1.08);filter:drop-shadow(0 10px 24px rgba(74,144,212,0.55));}
+.ip-label{font-family:'Nunito',sans-serif;font-size:0.82rem;font-weight:800;color:#1a5a9a;
+  text-align:center;letter-spacing:.06em;text-transform:uppercase;line-height:1.3;}
+.intro-hint-pill{display:flex;align-items:center;gap:10px;margin-top:14px;padding:10px 24px;
+  background:rgba(255,255,255,0.82);border:2px solid rgba(74,144,212,0.45);border-radius:50px;
+  box-shadow:0 4px 18px rgba(42,100,180,0.18),0 0 0 4px rgba(90,184,232,0.12);
+  animation:pillPulse 1.8s ease-in-out infinite;}
+@keyframes pillPulse{0%,100%{box-shadow:0 4px 18px rgba(42,100,180,0.18),0 0 0 4px rgba(90,184,232,0.12);}
+  50%{box-shadow:0 6px 26px rgba(42,100,180,0.30),0 0 0 8px rgba(90,184,232,0.22);}}
+.ihp-text{font-family:'Fredoka One',sans-serif;font-size:1.05rem;color:#1a5a9a;letter-spacing:.04em;white-space:nowrap;}
+.ihp-wand{font-size:1.1rem;animation:introWandFloat 1.8s ease-in-out infinite;}
+/* ── Success screen fix ── */
+.success-screen{position:relative;z-index:50;padding-bottom:180px;}
+.success-screen.show{display:block;padding-bottom:180px;}
+.corner{position:absolute;z-index:10;pointer-events:none;}
+@media(max-width:520px){.pw-top,.pw-bot{gap:18px;}.ip-wrap svg{width:108px!important;height:108px!important;}.ip-label{font-size:.7rem;}}
 </style>
 </head>
 <body>
@@ -642,7 +669,20 @@ select option { background: #fff; color: #1a5a9a; }
 
 
 <div id="mainContent">
-<div id="currentUrlDisplay" style="display:none"></div>
+<!-- Setup banner -->
+<div class="setup-banner" id="setupBanner">
+  <h3>⚙️ One-time setup — enables email notifications</h3>
+  <ol>
+    <li>Go to <a href="https://formspree.io/register" target="_blank"><strong>formspree.io/register</strong></a> — sign up free with Gmail</li>
+    <li>Click <strong>+ New Form</strong> → "Aryash RSVP" → <strong>Create Form</strong></li>
+    <li>Copy the URL — e.g. <code>https://formspree.io/f/xxxxxxxx</code></li>
+    <li>Paste below and click Save</li>
+  </ol>
+  <div class="url-row">
+    <input type="text" id="scriptUrlInput" placeholder="https://formspree.io/f/xxxxxxxx"/>
+    <button onclick="saveScriptUrl()">Save &amp; Activate</button>
+  </div>
+  <div id="currentUrlDisplay"></div>
 </div>
 
 
@@ -1190,49 +1230,34 @@ select option { background: #fff; color: #1a5a9a; }
     var gCount  = document.getElementById('guestCount').value.trim() || '1';
     var gAttend = document.getElementById('attendance').value;
     var gMsg    = document.getElementById('guestMessage').value.trim();
-
     if (!gName)   { showFieldError('guestName',  'Please enter your full name 💙'); return; }
     if (!gAttend) { showFieldError('attendance', 'Please select your attendance 💙'); return; }
-
     var btn = document.getElementById('rsvpBtn');
     btn.disabled = true;
     btn.innerHTML = '<span class="spinner"></span> Sending…';
-
-    var at = gAttend === 'yes' ? 'Happily Attending'
-           : gAttend === 'maybe' ? 'Hopefully Attending' : 'Unable to Attend';
-
-    /* ── Show success screen immediately ── */
-    document.getElementById('rsvpForm').style.display = 'none';
-    document.getElementById('confirmedName').textContent = gName;
+    var at = gAttend==='yes'?'Happily Attending':gAttend==='maybe'?'Hopefully Attending':'Unable to Attend';
+    /* Show success immediately */
+    document.getElementById('rsvpForm').style.display='none';
+    document.getElementById('confirmedName').textContent=gName;
     document.getElementById('successScreen').classList.add('show');
-
-    /* ── Send to Formspree silently AFTER success screen shown ── */
-    var FURL = localStorage.getItem('aryash_formspree_url') || '';
-    if (FURL) {
-      var img = new Image();
-      var f = document.createElement('form');
-      f.method = 'POST';
-      f.action = FURL;
-      f.style.cssText = 'position:fixed;top:-9999px;';
-      var iframe = document.createElement('iframe');
-      iframe.name = 'rs' + Date.now();
-      iframe.style.cssText = 'position:fixed;top:-9999px;width:0;height:0;border:0;';
-      f.target = iframe.name;
-      document.body.appendChild(iframe);
-      document.body.appendChild(f);
-      var pairs = [
-        ['name', gName], ['email', gEmail||'Not provided'],
-        ['guests', gCount], ['attendance', at], ['message', gMsg||'-'],
-        ['_subject', 'RSVP: ' + gName + ' - ' + at],
-        ['_replyto', gEmail||''], ['_template', 'table']
-      ];
-      pairs.forEach(function(p){
-        var inp = document.createElement('input');
-        inp.type='hidden'; inp.name=p[0]; inp.value=p[1];
-        f.appendChild(inp);
-      });
-      try { f.submit(); } catch(e){}
+    /* Send email via EmailJS in background */
+    var EJS_SVC = localStorage.getItem('ejs_service_id')  || '';
+    var EJS_TPL = localStorage.getItem('ejs_template_id') || '';
+    var EJS_KEY = localStorage.getItem('ejs_public_key')  || '';
+    if (EJS_SVC && EJS_TPL && EJS_KEY) {
+      try {
+        emailjs.init({publicKey: EJS_KEY});
+        emailjs.send(EJS_SVC, EJS_TPL, {
+          from_name:  gName,
+          from_email: gEmail||'Not provided',
+          attendance: at,
+          guests:     gCount,
+          message:    gMsg||'—',
+          reply_to:   gEmail||''
+        });
+      } catch(e){}
     }
+    try { bumpCounter(at, gCount); } catch(e){}
   }
 
   function showFieldError(id, msg) {
@@ -1261,6 +1286,104 @@ select option { background: #fff; color: #1a5a9a; }
   }
 
   init();
+</script>
+
+<div id="adminModal" style="display:none;position:fixed;inset:0;z-index:9999;background:rgba(0,0,0,0.65);align-items:center;justify-content:center;">
+  <div style="background:#fff;border-radius:18px;padding:26px 28px;max-width:500px;width:92%;box-shadow:0 20px 60px rgba(0,0,0,0.35);font-family:'Nunito',sans-serif;max-height:90vh;overflow-y:auto;">
+    <h2 style="font-family:'Fredoka One',sans-serif;color:#1a5a9a;font-size:1.35rem;margin:0 0 6px;text-align:center;">📧 RSVP Email Setup</h2>
+    <p style="font-size:0.8rem;color:#666;text-align:center;margin:0 0 14px;">Free · Works from local files · No hosting needed</p>
+    <div style="background:#f0f8ff;border-radius:10px;padding:14px 16px;margin-bottom:16px;font-size:0.82rem;color:#333;line-height:2.1;">
+      <strong>1.</strong> Go to <a href="https://www.emailjs.com" target="_blank" style="color:#1e6abf;font-weight:700;">emailjs.com</a> → Sign up free with Gmail<br>
+      <strong>2.</strong> <b>Email Services → Add New Service → Gmail</b> → Connect Gmail → copy <b>Service ID</b><br>
+      <strong>3.</strong> <b>Email Templates → Create New</b><br>
+      &nbsp;&nbsp;To: <code style="background:#e8f0fe;padding:1px 5px;border-radius:4px;">shreyank.gupta@gmail.com</code><br>
+      &nbsp;&nbsp;Subject: <code style="background:#e8f0fe;padding:1px 5px;border-radius:4px;">New RSVP from {{from_name}} - {{attendance}}</code><br>
+      &nbsp;&nbsp;Body: Name: {{from_name}}, Email: {{from_email}}, Guests: {{guests}}, Attendance: {{attendance}}, Message: {{message}}<br>
+      &nbsp;&nbsp;→ Save → copy <b>Template ID</b><br>
+      <strong>4.</strong> <b>Account → General → Public Key</b> → copy it<br>
+      <strong>5.</strong> Paste all 3 below → Save ✅
+    </div>
+    <div style="display:flex;flex-direction:column;gap:8px;margin-bottom:12px;">
+      <input id="ejsServiceId" type="text" placeholder="Service ID (e.g. service_xxxxxxx)" style="padding:9px 12px;border:2px solid #4a90d9;border-radius:10px;font-size:0.83rem;font-family:'Nunito',sans-serif;outline:none;"/>
+      <input id="ejsTemplateId" type="text" placeholder="Template ID (e.g. template_xxxxxxx)" style="padding:9px 12px;border:2px solid #4a90d9;border-radius:10px;font-size:0.83rem;font-family:'Nunito',sans-serif;outline:none;"/>
+      <input id="ejsPublicKey" type="text" placeholder="Public Key" style="padding:9px 12px;border:2px solid #4a90d9;border-radius:10px;font-size:0.83rem;font-family:'Nunito',sans-serif;outline:none;"/>
+      <button onclick="saveEmailJS()" style="padding:11px;background:#1e6abf;color:#fff;border:none;border-radius:10px;font-family:'Fredoka One',sans-serif;font-size:1rem;cursor:pointer;">Save &amp; Activate ✅</button>
+    </div>
+    <div id="adminSaveStatus" style="font-size:0.82rem;color:#1a7a3a;text-align:center;font-weight:700;min-height:20px;"></div>
+    <button onclick="document.getElementById('adminModal').style.display='none'" style="display:block;margin:10px auto 0;background:none;border:none;color:#aaa;font-size:0.78rem;cursor:pointer;">Close</button>
+  </div>
+</div>
+<script>
+function saveEmailJS(){
+  var s=document.getElementById('ejsServiceId').value.trim();
+  var t=document.getElementById('ejsTemplateId').value.trim();
+  var k=document.getElementById('ejsPublicKey').value.trim();
+  var st=document.getElementById('adminSaveStatus');
+  if(!s||!t||!k){st.style.color='#c0392b';st.textContent='❌ Please fill all 3 fields';return;}
+  localStorage.setItem('ejs_service_id',s);
+  localStorage.setItem('ejs_template_id',t);
+  localStorage.setItem('ejs_public_key',k);
+  st.style.color='#1a7a3a';
+  st.textContent='✅ Saved! RSVP emails will now arrive at shreyank.gupta@gmail.com';
+  setTimeout(function(){document.getElementById('adminModal').style.display='none';},2000);
+}
+if(window.location.search.indexOf('admin')!==-1){
+  document.getElementById('adminModal').style.display='flex';
+  var s=localStorage.getItem('ejs_service_id'),t=localStorage.getItem('ejs_template_id'),k=localStorage.getItem('ejs_public_key');
+  if(s)document.getElementById('ejsServiceId').value=s;
+  if(t)document.getElementById('ejsTemplateId').value=t;
+  if(k)document.getElementById('ejsPublicKey').value=k;
+  if(s&&t&&k)document.getElementById('adminSaveStatus').textContent='✅ EmailJS already configured';
+}
+</script>
+
+
+<div id="adminModal" style="display:none;position:fixed;inset:0;z-index:9999;background:rgba(0,0,0,0.65);align-items:center;justify-content:center;">
+  <div style="background:#fff;border-radius:18px;padding:26px 28px;max-width:500px;width:92%;box-shadow:0 20px 60px rgba(0,0,0,0.35);font-family:'Nunito',sans-serif;max-height:90vh;overflow-y:auto;">
+    <h2 style="font-family:'Fredoka One',sans-serif;color:#1a5a9a;font-size:1.35rem;margin:0 0 6px;text-align:center;">📧 RSVP Email Setup (EmailJS)</h2>
+    <p style="font-size:0.8rem;color:#666;text-align:center;margin:0 0 14px;">Free · Works from local files · 200 emails/month</p>
+    <div style="background:#f0f8ff;border-radius:10px;padding:14px 16px;margin-bottom:16px;font-size:0.82rem;color:#333;line-height:2.1;">
+      <b>1.</b> Go to <a href="https://www.emailjs.com" target="_blank" style="color:#1e6abf;font-weight:700;">emailjs.com</a> → Sign up free with Gmail<br>
+      <b>2.</b> Email Services → Add New Service → Gmail → Connect → copy <b>Service ID</b><br>
+      <b>3.</b> Email Templates → Create New → To: <code style="background:#e8f0fe;padding:1px 4px;border-radius:3px;">shreyank.gupta@gmail.com</code><br>
+      &nbsp;&nbsp;Subject: <code style="background:#e8f0fe;padding:1px 4px;border-radius:3px;">New RSVP from {{from_name}} - {{attendance}}</code><br>
+      &nbsp;&nbsp;Body: Name: {{from_name}}, Email: {{from_email}}, Guests: {{guests}}, Msg: {{message}}<br>
+      &nbsp;&nbsp;→ Save → copy <b>Template ID</b><br>
+      <b>4.</b> Account → General → <b>Public Key</b> → copy it<br>
+      <b>5.</b> Paste all 3 below and Save ✅
+    </div>
+    <div style="display:flex;flex-direction:column;gap:8px;margin-bottom:12px;">
+      <input id="ejsServiceId" type="text" placeholder="Service ID (e.g. service_xxxxxxx)" style="padding:9px 12px;border:2px solid #4a90d9;border-radius:10px;font-size:0.83rem;outline:none;"/>
+      <input id="ejsTemplateId" type="text" placeholder="Template ID (e.g. template_xxxxxxx)" style="padding:9px 12px;border:2px solid #4a90d9;border-radius:10px;font-size:0.83rem;outline:none;"/>
+      <input id="ejsPublicKey" type="text" placeholder="Public Key" style="padding:9px 12px;border:2px solid #4a90d9;border-radius:10px;font-size:0.83rem;outline:none;"/>
+      <button onclick="saveEmailJS()" style="padding:11px;background:#1e6abf;color:#fff;border:none;border-radius:10px;font-family:'Fredoka One',sans-serif;font-size:1rem;cursor:pointer;">Save &amp; Activate ✅</button>
+    </div>
+    <div id="adminSaveStatus" style="font-size:0.82rem;color:#1a7a3a;text-align:center;font-weight:700;min-height:20px;"></div>
+    <button onclick="document.getElementById('adminModal').style.display='none'" style="display:block;margin:10px auto 0;background:none;border:none;color:#aaa;font-size:0.78rem;cursor:pointer;">Close</button>
+  </div>
+</div>
+<script>
+function saveEmailJS(){
+  var s=document.getElementById('ejsServiceId').value.trim();
+  var t=document.getElementById('ejsTemplateId').value.trim();
+  var k=document.getElementById('ejsPublicKey').value.trim();
+  var st=document.getElementById('adminSaveStatus');
+  if(!s||!t||!k){st.style.color='#c0392b';st.textContent='Please fill all 3 fields';return;}
+  localStorage.setItem('ejs_service_id',s);
+  localStorage.setItem('ejs_template_id',t);
+  localStorage.setItem('ejs_public_key',k);
+  st.style.color='#1a7a3a';
+  st.textContent='Saved! RSVP emails will now arrive at shreyank.gupta@gmail.com';
+  setTimeout(function(){document.getElementById('adminModal').style.display='none';},2000);
+}
+if(window.location.search.indexOf('admin')!==-1){
+  document.getElementById('adminModal').style.display='flex';
+  var s=localStorage.getItem('ejs_service_id'),t=localStorage.getItem('ejs_template_id'),k=localStorage.getItem('ejs_public_key');
+  if(s)document.getElementById('ejsServiceId').value=s;
+  if(t)document.getElementById('ejsTemplateId').value=t;
+  if(k)document.getElementById('ejsPublicKey').value=k;
+  if(s&&t&&k)document.getElementById('adminSaveStatus').textContent='EmailJS already configured';
+}
 </script>
 </body>
 </html>
